@@ -1,0 +1,60 @@
+#!/usr/bin/python3
+'''Python Interpreter.'''
+
+import sys
+import time
+import random
+
+
+def is_prime(value, d=20):
+    if value == 2 or value == 3:
+        return True
+    if value < 2 or value % 2 == 0:
+        return False
+
+    idx = value - 1
+    pr = 0
+    while idx % 2 == 0:
+        idx = idx // 2
+        pr += 1
+
+    for _ in range(d):
+        i = random.randint(2, value - 2)
+        x = pow(i, idx, value)
+        if x == 1 or x == value - 1:
+            continue
+        for _ in range(pr - 1):
+            x = pow(x, 2, value)
+            if x == value - 1:
+                break
+        else:
+            return False
+
+    return True
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: rsa <file>")
+        exit()
+
+    file_name = sys.argv[1]
+
+    try:
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        print('File not Found')
+
+    time_limit = time.time()
+
+    number = int(lines[0].strip())
+
+    for idx in range(2, number//2):
+        if number % idx == 0 and is_prime(idx) and is_prime(number // idx):
+            print(f"{number}={number//idx}*{idx}")
+            break
+
+        elapsed_limit = time.time() - time_limit
+        if elapsed_limit < 5:
+            time.sleep(5 - elapsed_limit)

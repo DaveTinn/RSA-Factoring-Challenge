@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+'''Python Interpreter.'''
+
+import sys
+import time
+
+
+def factorization(factors):
+    '''Instantiating the factorization of number.
+
+    Parameters:
+        factors: integer to be factorized
+    Returns: result of factorization else, None if unable to facrorize.
+    '''
+    for idx in range(2, int(factors**0.5)+1):
+        if factors % idx == 0:
+            return (idx, factors // idx)
+    return None
+
+
+if __name__ == "__main__":
+    '''Entry point of the program.'''
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        exit()
+
+    file_name = sys.argv[1]
+
+    try:
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        print('File not found')
+        exit()
+
+    time_limit = time.time()
+    '''Defines the time limit of the program.
+    '''
+    for line in lines:
+        number = int(line.strip())
+        factors = factorization(number)
+        if factors:
+            print(f"{number}={factors[1]}*{factors[0]}")
+
+        '''If the program hasn't finished with the time limit of 5 seconds,
+            it will be killed.
+        '''
+        elapsed_limit = time.time() - time_limit
+        if elapsed_limit < 5:
+            time.sleep(5 - elapsed_limit)
