@@ -45,6 +45,5 @@ if __name__ == "__main__":
         '''If the program hasn't finished with the time limit of 5 seconds,
             it will be killed.
         '''
-        elapsed_limit = time.time() - time_limit
-        if elapsed_limit < 5:
-            time.sleep(5 - elapsed_limit)
+        if time.time() - time_limit > 5:
+            exit()
